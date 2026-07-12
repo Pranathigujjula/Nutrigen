@@ -1,8 +1,8 @@
-# Nutrigen AI 🥗
+# Nutrigen 
 
 Nutrigen is an intelligent, AI-powered meal planning application that uses the Gemini API and the USDA FoodData Central database to generate hyper-personalized, culturally authentic meal plans based on your precise macronutrient targets.
 
-## Features ✨
+## Features
 
 - **Intelligent RAG Pipeline**: Combines Google's Gemini LLM with FAISS vector search over USDA food data to ground AI generations in real nutritional science.
 - **Cultural Authenticity**: Generates authentic dishes tailored strictly to the cuisine of your choice (e.g., South Indian, Mediterranean, American).
@@ -10,14 +10,14 @@ Nutrigen is an intelligent, AI-powered meal planning application that uses the G
 - **Advanced Controls**: Choose between 1-Day or 1-Week plans, dictate your Meals Per Day (from Intermittent Fasting to 4 Meals), and declare dietary preferences (Vegan, Pescatarian, etc.).
 - **History Tracking**: Features a fully-fledged SQLite database with a Dashboard that automatically saves and retrieves your past generated meal plans.
 
-## Tech Stack 🛠️
+## Tech Stack
 
 - **Backend**: Python, FastAPI, SQLite
 - **AI/ML**: Google Gemini (via REST API), SentenceTransformers, FAISS
 - **External APIs**: USDA FoodData Central API
 - **Frontend**: Vanilla HTML/CSS/JS (Zero-dependency, lightweight UI)
 
-## Setup Instructions 🚀
+## Setup Instructions
 
 ### 1. Clone the repository
 ```bash
