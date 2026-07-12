@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutrigen AI Meal Planner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="/static/index.css">
+</head>
+<body>
+    
+    <nav class="top-nav">
+        <div class="nav-logo">Nutrigen<span class="accent-text">.AI</span></div>
+    </nav>
+
+    <div class="container">
+        
+        <main id="app-content">
+            
+            <div class="card" id="wizard-card">
+                <h2 id="wizard-title">Welcome to Nutrigen</h2>
+                <p class="subtitle" id="wizard-subtitle">Your personal AI nutritionist.</p>
+                
+                <form id="wizard-form">
+                    
+                    <!-- Slide 0: Login OR Signup Choice -->
+                    <div class="slide active-slide" id="slide-0">
+                        <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+                            <button type="button" class="primary-btn" id="go-login-btn">Login to Account</button>
+                            <button type="button" class="secondary-btn" id="go-signup-btn">Create New Account</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Dashboard Slide (Shown after Login) -->
+                    <div class="slide hidden-slide" id="slide-dashboard">
+                        <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1rem;">
+                            <button type="button" class="primary-btn" id="btn-new-plan">Generate New Plan</button>
+                            <button type="button" class="secondary-btn" id="btn-view-history">View History</button>
+                        </div>
+                        <button type="button" class="secondary-btn back-to-home" style="margin-top: 2rem;">Log Out</button>
+                    </div>
+
+                    <!-- History Slide -->
+                    <div class="slide hidden-slide" id="slide-history">
+                        <h3>Your Generated Meal Plans</h3>
+                        <div id="history-container" style="max-height: 400px; overflow-y: auto; text-align: left; padding: 1rem;">
+                            <!-- History items injected via JS -->
+                        </div>
+                        <div class="wizard-controls" style="margin-top: 1rem;">
+                            <button type="button" class="secondary-btn" id="back-to-dashboard-from-history">Back to Dashboard</button>
+                        </div>
+                    </div>
+
+                    <!-- Slide 1: Login Form -->
+                    <div class="slide hidden-slide" id="slide-login">
+                        <h3>Login</h3>
+                        <div class="form-group full-width">
+                            <label for="login-name">Account Name</label>
+                            <input type="text" id="login-name" name="login-name" placeholder="Enter your username">
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="login-password">Password</label>
+                            <input type="password" id="login-password" name="login-password" placeholder="Enter your password">
+                        </div>
+                        <div class="wizard-controls">
+                            <button type="button" class="secondary-btn back-to-home">Back</button>
+                            <button type="button" class="primary-btn glow-btn" id="submit-login-btn">
+                                <span class="btn-text">Login & Generate Plan</span>
+                                <div class="loader hidden" id="login-loader"></div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2: Signup Form (Credentials) -->
+                    <div class="slide hidden-slide" id="slide-signup-1">
+                        <h3>Create Account</h3>
+                        <div class="form-group full-width">
+                            <label for="signup-name">Account Name</label>
+                            <input type="text" id="signup-name" name="name" placeholder="Choose a username">
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="signup-password">Password</label>
+                            <input type="password" id="signup-password" name="password" placeholder="Create a password">
+                        </div>
+                        <div class="wizard-controls">
+                            <button type="button" class="secondary-btn back-to-home">Back</button>
+                            <button type="button" class="primary-btn" id="next-signup-1">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Slide 3: Signup (Nutrition Targets 1 & Cuisine) -->
+                    <div class="slide hidden-slide" id="slide-signup-2">
+                        <h3>Dietary Profile (Part 1)</h3>
+                        <div class="form-group full-width">
+                            <label for="cuisine_type">Preferred Cuisine</label>
+                            <select id="cuisine_type" name="cuisine_type" class="custom-select" required>
+                                <option value="" disabled selected>Select Cuisine...</option>
+                                <option value="Mediterranean">Mediterranean</option>
+                                <option value="Indian">Indian</option>
+                                <option value="South Indian">South Indian</option>
+                                <option value="Chinese">Chinese</option>
+                                <option value="American">American</option>
+                                <option value="Mexican">Mexican</option>
+                                <option value="Japanese">Japanese</option>
+                                <option value="Any">Any / Mixed</option>
+                            </select>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="meals_per_day">Meals Per Day</label>
+                                <select id="meals_per_day" name="meals_per_day" class="custom-select" required>
+                                    <option value="2 Meals (Diet/Fasting)">2 Meals (Diet/Fasting)</option>
+                                    <option value="3 Meals (Standard)" selected>3 Meals (Standard)</option>
+                                    <option value="4 Meals (3 Meals + 1 Snack)">4 Meals (3 Meals + Snack)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="plan_duration">Plan Duration</label>
+                                <select id="plan_duration" name="plan_duration" class="custom-select" required>
+                                    <option value="1 Day" selected>1 Day</option>
+                                    <option value="1 Week">1 Week (7 Days)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group full-width" style="margin-top: 1rem;">
+                            <label for="dietary_preferences">Diet Type</label>
+                            <select id="dietary_preferences" name="dietary_preferences" class="custom-select" required>
+                                <option value="Non-Veg (Any)">Non-Veg (Any)</option>
+                                <option value="Vegetarian">Vegetarian</option>
+                                <option value="Vegan">Vegan</option>
+                                <option value="Pescatarian">Pescatarian</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="calories">Daily Calories (kcal)</label>
+                                <input type="number" id="calories" name="calories" placeholder="2000">
+                            </div>
+                            <div class="form-group">
+                                <label for="protein">Protein (g)</label>
+                                <input type="number" id="protein" name="protein" placeholder="150">
+                            </div>
+                        </div>
+                        <div class="wizard-controls">
+                            <button type="button" class="secondary-btn" id="prev-signup-2">Back</button>
+                            <button type="button" class="primary-btn" id="next-signup-2">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Slide 4: Signup (Nutrition Targets 2) -->
+                    <div class="slide hidden-slide" id="slide-signup-3">
+                        <h3>Dietary Profile (Part 2)</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="carbs">Carbs (g)</label>
+                                <input type="number" id="carbs" name="carbs" placeholder="200">
+                            </div>
+                            <div class="form-group">
+                                <label for="fat">Fat (g)</label>
+                                <input type="number" id="fat" name="fat" placeholder="65">
+                            </div>
+                            <div class="form-group">
+                                <label for="fiber">Fiber (g)</label>
+                                <input type="number" id="fiber" name="fiber" placeholder="30">
+                            </div>
+                            <div class="form-group">
+                                <label for="sugar_limit">Sugar Limit (g)</label>
+                                <input type="number" id="sugar_limit" name="sugar_limit" placeholder="40">
+                            </div>
+                            <div class="form-group">
+                                <label for="sodium">Sodium (mg)</label>
+                                <input type="number" id="sodium" name="sodium" placeholder="2300">
+                            </div>
+                            <div class="form-group">
+                                <label for="cholesterol">Cholesterol (mg)</label>
+                                <input type="number" id="cholesterol" name="cholesterol" placeholder="300">
+                            </div>
+                        </div>
+                        
+                        <div class="wizard-controls">
+                            <button type="button" class="secondary-btn" id="prev-signup-3">Back</button>
+                            <button type="button" class="primary-btn glow-btn" id="submit-signup-btn">
+                                <span class="btn-text">Create & Generate Plan</span>
+                                <div class="loader hidden" id="signup-loader"></div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Hidden strict defaults for the API (Signup Only) -->
+                    <input type="hidden" name="dietary_restrictions" value="None">
+                    <input type="hidden" name="food_history" value="None">
+                    <input type="hidden" name="available_foods" value="Everything">
+                    <input type="hidden" name="meal_type" value="All">
+                    <input type="hidden" name="portion_size" value="Normal">
+                    <input type="hidden" name="intervention_duration" value="1-day">
+                    <input type="hidden" name="food_intake_patterns" value="Standard">
+                    <input type="hidden" name="nutritional_targets" value="Balanced">
+                    <input type="hidden" name="output_format" value="markdown">
+
+                </form>
+            </div>
+
+            <!-- Results Card -->
+            <div class="card hidden" id="results-card">
+                <h2>Your Personalized Meal Plan</h2>
+                <div class="user-badge" id="user-greeting">Generated Successfully!</div>
+                <div id="meal-plan-content" class="markdown-body"></div>
+                
+                <div style="margin-top: 2rem;">
+                    <button class="secondary-btn" onclick="location.reload()">Start Over</button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

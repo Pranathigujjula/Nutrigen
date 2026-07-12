@@ -1,0 +1,17 @@
+# Environments
+.env
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Database
+*.sqlite3
+nutrigen.db
+
+# OS
+.DS_Store
+Thumbs.db
