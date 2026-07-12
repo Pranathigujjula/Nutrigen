@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 class USDAClient:
     def __init__(self, api_key: str = None):
-        self.api_key = api_key or os.getenv("USDA_API_KEY", "XBcdxuqgjv8DHoI6zkJrYAFTbmZFcBuhcvwnABcI")
+        self.api_key = api_key or os.getenv("USDA_API_KEY")
         self.base_url = "https://api.nal.usda.gov/fdc/v1"
 
     def search_food(self, query: str, page_size: int = 5):

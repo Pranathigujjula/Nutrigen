@@ -19,10 +19,9 @@ async def lifespan(app: FastAPI):
     logger = logging.getLogger(__name__)
     logger.info("Initializing USDA Vector DB in background...")
     try:
-        # Pass key from environment or fallback
         rag.populate_knowledge_base(
             ["apple", "chicken breast", "rice", "broccoli", "salmon", "spinach", "oats"],
-            os.getenv("USDA_API_KEY", "XBcdxuqgjv8DHoI6zkJrYAFTbmZFcBuhcvwnABcI")
+            os.getenv("USDA_API_KEY")
         )
     except Exception as e:
         logger.error(f"Failed to auto-populate USDA data: {e}")
